@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>CL English Academy – Advanced English Practice with AI</title>
+  <meta name="description" content="Advanced scenario-based English practice with AI conversations, analytics, and social features." />
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#6e9cff" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css?v=3.2">
+
+<style id="hotfix-contrast">
+/* Force readable text on light background (iOS-safe) */
+.hero-title, .auth-hero-title {
+  color:#000000 !important;
+  -webkit-text-fill-color:#000000 !important;
+  background:none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+}
+.hero-subtitle, .auth-subtitle, .auth-hero p.subtitle, .auth-hero .subtitle, .hero-card .subtitle {
+  color:#6b7280 !important; /* light gray */
+  -webkit-text-fill-color:#6b7280 !important;
+  background:none !important;
+  -webkit-background-clip: initial !important;
+  background-clip: initial !important;
+  opacity:1 !important;
+}
+</style>
+
+</head>
+<body>
+  <!-- Auth Screen -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-container">
+      <div class="glass-card auth-hero">
+        <div class="brand" style="margin-bottom: 24px;">
+          <img src="assets/clea-logo.png" alt="CL English Academy" class="brand-logo-image auth" />
+          <div class="sr-only">CL English Academy</div>
+        </div>
+        <h1 class="auth-hero-title" style="color:#000;-webkit-text-fill-color:#000;background:none;-webkit-background-clip:initial;background-clip:initial;">Master English with AI-Powered Conversations</h1>
+        <p class="auth-hero-subtitle">Join thousands of learners practicing real-world English scenarios with advanced AI technology.</p>
+        <ul class="auth-features">
+          <li><i class="fas fa-comments"></i> Interactive AI conversations for real scenarios</li>
+          <li><i class="fas fa-chart-line"></i> Advanced progress tracking and analytics</li>
+          <li><i class="fas fa-trophy"></i> Gamified learning with achievements and streaks</li>
+          <li><i class="fas fa-users"></i> Social features and leaderboards</li>
+          <li><i class="fas fa-microphone"></i> Voice recognition for pronunciation practice</li>
+        </ul>
+      </div>
+      
+      <div class="glass-card auth-card">
+        <h2 class="auth-title">Welcome Back!</h2>
+        <div class="auth-form">
+          <input id="authName" class="input" placeholder="Full name (for profile)" />
+          <input id="authEmail" class="input" placeholder="Email address" type="email" />
+          <input id="authPassword" class="input" placeholder="Password (min 6 characters)" type="password" />
+        </div>
+        <div id="authError" class="auth-error"></div>
+        <div class="auth-actions">
+          <button id="loginBtn" class="btn btn-primary">Sign In</button>
+          <button id="signupBtn" class="btn btn-secondary">Create Account</button>
+        </div>
+        <p class="auth-tip">Use a real email to sync your progress across devices</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main App -->
+  <div id="app" class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <nav class="nav">
+          <div class="brand">
+            <img src="assets/clea-logo.png" alt="CL English Academy" class="brand-logo-image header" />
+            <div class="sr-only">CL English Academy</div>
+          </div>
+          <div class="nav-actions">
+            <div class="user-menu">
+              <div id="userAvatar" class="user-avatar">A</div>
+            </div>
+            <button id="logoutBtn" class="btn btn-secondary" title="Logout">Logout</button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="glass-card hero-main">
+            <h1 class="hero-title">Practice Real English with AI</h1>
+            <p class="hero-subtitle" style="color:#6b7280;-webkit-text-fill-color:#6b7280;background:none;-webkit-background-clip:initial;background-clip:initial;font-size:16px;">Choose from 10+ realistic scenarios, practice for 10 minutes, and track your progress with advanced analytics.</p>
+            
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div id="pointsDisplay" class="stat-value">0</div>
+                <div class="stat-label">Points</div>
+              </div>
+              <div class="stat-card">
+                <div id="streakDisplay" class="stat-value">0</div>
+                <div class="stat-label">Day Streak</div>
+              </div>
+              <div class="stat-card">
+                <div id="completedDisplay" class="stat-value">0</div>
+                <div class="stat-label">Completed</div>
+              </div>
+            </div>
+            
+            <div class="progress-container">
+              <div class="progress-bar">
+                <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+              </div>
+              <div class="progress-info">
+                <span class="progress-level">Level <span id="levelDisplay">1</span></span>
+                <span class="progress-next">Next: <span id="nextLevelPoints">100</span> pts</span>
+              </div>
+            </div>
+            
+            <div class="flex gap-3" style="margin-top: 24px;">
+              <button id="startBtn" class="btn btn-primary">
+                <i class="fas fa-bolt"></i> Start a Challenge
+              </button>
+              <button id="resumeBtn" class="btn btn-primary">
+                <i class="fas fa-play"></i> Resume Last
+              </button>
+              <button id="resetBtn" class="btn btn-ghost">
+                <i class="fas fa-refresh"></i> Reset Progress
+              </button>
+            </div>
+            <p class="scroll-hint" aria-live="polite">
+              <i class="fa-solid fa-angles-down" aria-hidden="true"></i>
+              <span>Notes: Scroll down to explore all the topics</span>
+            </p>
+          </div>
+          
+          <div class="sidebar">
+            <div class="glass-card sidebar-section">
+              <h3 class="sidebar-title">
+                <i class="fas fa-target"></i>
+                Daily Challenges
+              </h3>
+              <div class="challenge-item">
+                <div class="challenge-info">
+                  <div class="challenge-title">Daily Practice</div>
+                  <div class="challenge-desc">Complete any scenario (+20 bonus)</div>
+                </div>
+                <div id="dailyStatus" class="challenge-status">Not Done</div>
+              </div>
+              <div class="challenge-item">
+                <div class="challenge-info">
+                  <div class="challenge-title">Weekly Goal</div>
+                  <div class="challenge-desc">Complete 5 different scenarios (+100 bonus)</div>
+                </div>
+                <div id="weeklyStatus" class="challenge-status">0 / 5</div>
+              </div>
+            </div>
+            
+            <div class="glass-card sidebar-section">
+              <h3 class="sidebar-title">
+                <i class="fas fa-chart-bar"></i>
+                Quick Stats
+              </h3>
+              <div class="challenge-item">
+                <div class="challenge-info">
+                  <div class="challenge-title">This Week</div>
+                  <div class="challenge-desc">Sessions completed</div>
+                </div>
+                <div class="challenge-status">3</div>
+              </div>
+              <div class="challenge-item">
+                <div class="challenge-info">
+                  <div class="challenge-title">Average Score</div>
+                  <div class="challenge-desc">Last 10 sessions</div>
+                </div>
+                <div class="challenge-status">85%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Learning Path -->
+    <section class="learning-path-section">
+      <div class="section-header">
+        <h2 class="section-title">Your Learning Path</h2>
+        <p class="section-subtitle">Pick any challenge and start practicing to earn rewards!</p>
+      </div>
+      <div id="learningPath" class="learning-path-container">
+        <!-- The learning path nodes will be populated by JavaScript -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; <span id="currentYear"></span> CL English Academy. Built for English learning centers worldwide.</p>
+      </div>
+    </footer>
+  </div>
+
+
+  <!-- Practice Session Modal -->
+  <div id="practiceModal" class="modal-backdrop">
+    <div class="modal practice-modal" role="dialog" aria-modal="true" aria-labelledby="practiceTitle" tabindex="-1">
+      <header class="modal-header">
+        <div class="modal-header-content">
+          <div class="modal-title">
+            <i class="fas fa-comments" style="color: #8b5cf6;"></i>
+            <span id="practiceTitle">Practice Session</span>
+          </div>
+          <div class="flex gap-3" style="align-items:center;">
+            <button id="openChatBtn" class="btn btn-secondary" title="Open Chat">
+              <i class="fas fa-comment-dots"></i>
+              <span>Open Chat</span>
+            </button>
+            <button id="closePracticeBtn" class="modal-close-btn" aria-label="Close">
+              <!-- Lucide X icon inline -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+      <div class="modal-body">
+        <p id="practiceDescription" class="practice-description">Loading your scenario...</p>
+        <div class="iframe-container">
+          <iframe id="practiceFrame" class="modal-iframe" allow="microphone"></iframe>
+        </div>
+      </div>
+      <footer class="modal-footer practice-footer">
+        <button id="completeBtn" class="btn btn-success">I'm Done, Finish Session</button>
+      </footer>
+    </div>
+  </div>
+  <div id="toast" class="toast">
+    <i id="toastIcon" class="toast-icon fas fa-check-circle"></i>
+    <span id="toastMessage">Success!</span>
+  </div>
+
+  <!-- Confetti Container -->
+  <div id="confetti" class="confetti-container"></div>
+
+  <script src="app.js?v=3.2" type="module"></script>
+
+<!-- Voiceflow Freestyle widget -->
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow = window.voiceflow || {};
+        if (window.voiceflow.chat && window.voiceflow.chat.load) {
+          window.voiceflow.chat.load({
+            verify: { projectID: '68de1f6c5427f87add0e6675' },
+            url: 'https://general-runtime.voiceflow.com',
+            versionID: 'production',
+            voice: { url: 'https://runtime-api.voiceflow.com' }
+          });
+        }
+      };
+      v.src = 'https://cdn.voiceflow.com/widget-next/bundle.mjs'; v.type = 'text/javascript'; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
+
+
+<script>
+(function(){
+  function forceVisible(){
+    var selectors = [
+      '.auth-hero-title', '.hero-title', '.auth-hero h1', 'header .auth-hero h1',
+      '.hero-subtitle', '.auth-subtitle', '.auth-hero p', '.auth-hero .subtitle', '.hero-card .subtitle'
+    ];
+    var titleTargets = document.querySelectorAll(selectors.slice(0,4).join(','));
+    var subTargets = document.querySelectorAll(selectors.slice(4).join(','));
+    titleTargets.forEach(function(el){
+      try{
+        el.style.setProperty('color', '#000000', 'important');
+        el.style.setProperty('-webkit-text-fill-color', '#000000', 'important');
+        el.style.setProperty('background', 'none', 'important');
+        el.style.setProperty('-webkit-background-clip', 'initial', 'important');
+        el.style.setProperty('background-clip', 'initial', 'important');
+        el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('mix-blend-mode', 'normal', 'important');
+      }catch(e){}
+    });
+    subTargets.forEach(function(el){
+      try{
+        el.style.setProperty('color', '#6b7280', 'important'); // light gray
+        el.style.setProperty('-webkit-text-fill-color', '#6b7280', 'important');
+        el.style.setProperty('background', 'none', 'important');
+        el.style.setProperty('-webkit-background-clip', 'initial', 'important');
+        el.style.setProperty('background-clip', 'initial', 'important');
+        el.style.setProperty('opacity', '1', 'important');
+        el.style.setProperty('mix-blend-mode', 'normal', 'important');
+      }catch(e){}
+    });
+  }
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', forceVisible);
+  } else {
+    forceVisible();
+  }
+  // Re-apply after a short delay in case SPA swaps content
+  setTimeout(forceVisible, 800);
+  setTimeout(forceVisible, 2000);
+})();
+</script>
+
+</body>
+</html>

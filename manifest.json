@@ -1,0 +1,27 @@
+{
+  "name": "CL English Academy",
+  "short_name": "CL English",
+  "description": "Advanced English practice with AI-powered scenarios, gamification, and progress tracking.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0b112d",
+  "theme_color": "#1e293b",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
